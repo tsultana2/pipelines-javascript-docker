@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: tsultanapipelinesjavascriptdocker 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tsultanapipelinesjavascriptdocker
+  template:
+    metadata:
+      labels:
+        app: tsultanapipelinesjavascriptdocker 
+    spec:
+      containers:
+        - name: tsultanapipelinesjavascriptdocker 
+          image: mycontainerregistrypartone.azurecr.io/tsultanapipelinesjavascriptdocker
+          ports:
+          - containerPort: 8080
