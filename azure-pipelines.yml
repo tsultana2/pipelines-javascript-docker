@@ -74,12 +74,14 @@ stages:
               secretName: $(imagePullSecret)
               namespace: $(k8sNamespace)
               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              kubernetesServiceConnection: 'ebd81c16-aacf-4f4b-83da-8c4cefe4bcdb'
 
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
               namespace: $(k8sNamespace)
+              kubernetesServiceConnection: 'ebd81c16-aacf-4f4b-83da-8c4cefe4bcdb'
               manifests: |
                 $(System.ArtifactsDirectory)/manifests/deployment.yml
                 $(System.ArtifactsDirectory)/manifests/service.yml
@@ -123,6 +125,7 @@ stages:
             inputs:
               action: deploy
               namespace: $(k8sNamespaceForPR)
+              kubernetesServiceConnection: 'ebd81c16-aacf-4f4b-83da-8c4cefe4bcdb'
               manifests: |
                 $(Pipeline.Workspace)/manifests/deployment.yml
                 $(Pipeline.Workspace)/manifests/service.yml
