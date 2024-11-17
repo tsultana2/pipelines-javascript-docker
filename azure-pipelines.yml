@@ -22,7 +22,8 @@ variables:
   vmImageName: 'ubuntu-latest'
 
   # Name of the new namespace being created to deploy the PR changes.
-  k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
+  k8sNamespaceForPR: 'default'
+  k8sNamespace: 'default'
 
 stages:
 - stage: Build
@@ -105,6 +106,7 @@ stages:
               command: apply
               useConfigurationFile: true
               inline: '{ "kind": "Namespace", "apiVersion": "v1", "metadata": { "name": "$(k8sNamespaceForPR)" }}'
+              kubernetesServiceConnection: 'ebd81c16-aacf-4f4b-83da-8c4cefe4bcdb'
 
           - task: KubernetesManifest@0
             displayName: Create imagePullSecret
@@ -113,6 +115,8 @@ stages:
               secretName: $(imagePullSecret)
               namespace: $(k8sNamespaceForPR)
               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              kubernetesServiceConnection: 'ebd81c16-aacf-4f4b-83da-8c4cefe4bcdb'
+
 
           - task: KubernetesManifest@0
             displayName: Deploy to the new namespace in the Kubernetes cluster
